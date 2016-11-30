@@ -13,7 +13,7 @@ void handleRoot() {
 }
 
 void setup ( void ) {
-  Serial.begin ( 115200 );
+  Serial.begin ( 9600 );
   WiFi.begin ( ssid, password );
   Serial.println ( "" );
 
@@ -37,9 +37,8 @@ void setup ( void ) {
   server.on("/play", []()
   {
     server.send(200, "text/html", "play");
-    String musicIndex = server.arg("musicIndex");
-    Serial.print("@a "); 
-    Serial.println(musicIndex);
+    Serial.print("@a");
+    Serial.println(server.arg(0));
   });
 
   server.on("/stop", []()
