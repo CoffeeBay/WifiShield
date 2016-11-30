@@ -63,5 +63,10 @@ void setup ( void ) {
 }
 
 void loop ( void ) {
+  if (WiFi.status() != WL_CONNECTED) {
+    setup();
+    delay(5000);
+  }
+
   server.handleClient();
 }
