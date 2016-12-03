@@ -1,7 +1,7 @@
 #include <ESP8266WiFi.h>
 #include <WiFiClient.h>
 #include <ESP8266WebServer.h>
-#include <ESP8266mDNS.h>
+
 
 const char *ssid = "bangul";
 const char *password = "qwertyuiop";
@@ -14,13 +14,18 @@ void handleRoot() {
 
 void setup ( void ) {
   Serial.begin ( 9600 );
+  startWiFi();
+}
+
+void startWiFi() {
+  WiFi.mode(WIFI_STA);
   WiFi.begin ( ssid, password );
   Serial.println ( "" );
 
   // Wait for connection
   while ( WiFi.status() != WL_CONNECTED ) {
-    delay ( 500 );
-    Serial.print ( "." );
+      Serial.print ( "." );
+      delay ( 500 );
   }
 
   Serial.println ( "" );
@@ -29,9 +34,9 @@ void setup ( void ) {
   Serial.print ( "IP address: " );
   Serial.println ( WiFi.localIP() );
 
-  if ( MDNS.begin ( "esp8266" ) ) {
-    Serial.println ( "MDNS responder started" );
-  }
+//  if ( MDNS.begin ( "esp8266" ) ) {
+//    Serial.println ( "MDNS responder started" );
+//  }
 
   server.on ( "/", handleRoot );
   server.on("/play", []()
@@ -63,10 +68,5 @@ void setup ( void ) {
 }
 
 void loop ( void ) {
-  if (WiFi.status() != WL_CONNECTED) {
-    setup();
-    delay(5000);
-  }
-
   server.handleClient();
 }
